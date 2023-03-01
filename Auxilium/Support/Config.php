@@ -1,9 +1,9 @@
 <?php
 
-namespace GameServer\Auxilium\Support;
+namespace Auxilium\Support;
 
 use Exception;
-use GameServer\Auxilium\Support\ArrayHelper as Arr;
+use Auxilium\Support\ArrayHelper as Arr;
 
 class Config
 {

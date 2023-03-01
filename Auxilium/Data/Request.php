@@ -15,6 +15,6 @@ class Request
     }
 
     public function input(string $key) {
-        return $this->request_data[$key];
+        return $this->request_data[$key] ?? null;
     }
 }

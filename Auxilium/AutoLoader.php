@@ -15,9 +15,6 @@ class AutoLoader
         $path = '';
 
         foreach ($namespace_parts as $index => $namespace_part) {
-            if ($index == 0)
-                continue;
-
             if ($index != count($namespace_parts) - 1) {
                 $path .= $namespace_part . '\\';
             } else {

@@ -2,19 +2,18 @@
 
 namespace Controller\User;
 
+use Auxilium\Controller;
 use Auxilium\Data\Request;
 use Exception;
-use GameServer\Auxilium\Support\App;
-use GameServer\Auxilium\Support\Validator;
+use Auxilium\Support\App;
+use Auxilium\Support\Validator;
 use Model\User\User;
 
-class CreateUserController
+class CreateUserController extends Controller
 {
-    public function __construct(
-        private readonly Validator $validator
-    ) {
-    }
-
+    /**
+     * @throws Exception
+     */
     public function __invoke(Request $request)
     {
         $rules = [
@@ -24,7 +23,7 @@ class CreateUserController
             User::EMAIL => 'string|max:32|min:4|required',
         ];
 
-        (new $this->validator())($request, $rules);
+        ($this->validate())($request, $rules);
 
         if ($request->input('password') != $request->input('repeat_password'))
             throw new Exception("Passwords must be the same");

@@ -13,5 +13,5 @@ spl_autoload_register(function (string $namespace) {
 try {
     (new \Auxilium\App\Router())->execute();
 } catch (Exception $exception) {
-    \GameServer\Auxilium\Support\Response::error($exception->getMessage());
+    \Auxilium\Support\Response::error($exception->getMessage());
 }

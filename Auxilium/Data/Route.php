@@ -2,8 +2,9 @@
 
 namespace Auxilium\Data;
 
+use Auxilium\Support\Validator;
 use Exception;
-use GameServer\Auxilium\Support\ArrayHelper as Arr;
+use Auxilium\Support\ArrayHelper as Arr;
 
 class Route
 {
@@ -30,7 +31,7 @@ class Route
     public function getController()
     {
         try {
-            return new $this->controller();
+            return new $this->controller(new Validator());
         } catch (Exception $exception) {
             throw new Exception('CONTROLLER NOT FOUND');
         }

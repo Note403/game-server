@@ -1,6 +1,6 @@
 <?php
 
-namespace GameServer\Auxilium\Support;
+namespace Auxilium\Support;
 
 use Auxilium\Data\Request;
 use Exception;
@@ -21,27 +21,31 @@ class Validator
         'required',
     ];
 
+    private Request $request;
+
     public function __invoke(Request $request, array $rules): void
     {
         if (empty($rules))
             throw new Exception('VALIDATION RULES EMPTY');
 
-        $this->ruleSet = $this->createRuleSet($request);
+        $this->ruleSet = $this->createRuleSet($rules);
+        $this->request = $request;
 
         if (!$this->validRules())
             throw new Exception('INVALID VALIDATION RULES');
 
         foreach ($this->ruleSet as $key => $rules) {
             foreach ($rules as $rule) {
-                if (str_contains(':', $rule)) {
+                if (str_contains($rule, ':')) {
                     $rule_parts = explode(':', $rule);
 
-                    $this->{$rule_parts[0]}($key, $request->input($key), $rule_parts[1]);
+                    $this->{$rule_parts[0]}($key, $this->request->input($key), $rule_parts[1]);
                 } else {
-                    if ($rule == 'required' && empty($request->input($key)))
+                    if (in_array('required', $rules) && $this->request->input($key) == null) {
                         throw new Exception("{$key} is a required field");
-
-                    $this->{$rule}($key, $request->input($key));
+                    } else if ($rule != 'required') {
+                        $this->{$rule}($key, $this->request->input($key));
+                    }
                 }
             }
         }
@@ -52,7 +56,7 @@ class Validator
         $ruleSet = array();
 
         foreach ($rules as $key => $ruleSetStr) {
-            $ruleSet[$key] = str_contains('|', $ruleSetStr)
+            $ruleSet[$key] = str_contains($ruleSetStr, '|')
                 ? explode('|', $ruleSetStr)
                 : [$ruleSetStr];
         }
@@ -72,7 +76,7 @@ class Validator
             }
         }
 
-        return false;
+        return true;
     }
 
     private function string(string $key, $value)

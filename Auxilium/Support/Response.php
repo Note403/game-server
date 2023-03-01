@@ -1,6 +1,6 @@
 <?php
 
-namespace GameServer\Auxilium\Support;
+namespace Auxilium\Support;
 
 class Response
 {

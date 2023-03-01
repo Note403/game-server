@@ -1,10 +1,10 @@
 <?php
 
-namespace GameServer\Auxilium\Database;
+namespace Auxilium\Database;
 
 use Exception;
-use GameServer\Auxilium\Support\ArrayHelper as Arr;
-use GameServer\Auxilium\Support\Config;
+use Auxilium\Support\ArrayHelper as Arr;
+use Auxilium\Support\Config;
 use mysqli;
 
 class DB

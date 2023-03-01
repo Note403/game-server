@@ -2,7 +2,7 @@
 
 return [
     'host' => 'localhost',
-    'database' => 'payments',
+    'database' => 'tyc',
     'username' => 'root',
     'password' => '',
     'port' => '3306'
