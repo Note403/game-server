@@ -133,23 +133,26 @@ class QueryBuilder
         $queryValues = '(';
 
         foreach ($values as $column => $value) {
-            if ($this->isColumn($column))
-                throw new Exception('ERROR');
+            if (!$this->isColumn($column))
+                throw new Exception("Column: {$column} does not exist in {$this->table}");
 
-            if ($values[count($values) - 1][1] == $column) {
-                $queryColumns .= $this->addColumn($column) . ')';
-                $queryValues .= $this->addValue($value) . ')';
+            if ($queryColumns == '(' && $queryValues == '(') {
+                $queryColumns .= $column;
+                $queryValues .= "'{$value}'";
             } else {
-                $queryColumns .= $this->addColumn($column) . ', ';
-                $queryValues .= $this->addValue($value) . ', ';
+                $queryColumns .= ", {$column}";
+                $queryValues .= ", '{$value}'";
             }
         }
 
-        $this->query .= ' ' . $queryColumns . ' VALUES ' . $queryValues;
+        $this->query .= " {$queryColumns}) VALUES {$queryValues})";
 
-        return !is_array($this->build())
-            ? throw new Exception('ERROR')
-            : true;
+        $buildResponse = $this->build();
+
+        if (!$buildResponse)
+            throw new Exception("Query ERROR");
+
+        return $buildResponse;
     }
 
     /**
@@ -231,14 +234,11 @@ class QueryBuilder
      */
     private function build()
     {
-        if (empty($this->where_clauses))
-            throw new Exception('ERROR');
-
-        foreach ($this->where_clauses as $where_clause) {
-            $this->query .= $where_clause;
-        };
-
-        echo $this->query;
+        if (!empty($this->where_clauses)) {
+            foreach ($this->where_clauses as $where_clause) {
+                $this->query .= $where_clause;
+            }
+        }
 
         return $this->db->execute($this->query);
     }

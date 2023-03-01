@@ -43,16 +43,9 @@ class DB
             echo $exception->getMessage();
         }
 
-        // DEBUG CODE
-
-        echo '<pre>';
-        var_dump($this->connection->error_list);
-        echo '</pre>';
-
-        // DEBUG CODE
-
         try {
-            $result = $result->fetch_all(MYSQLI_ASSOC);
+            if ($result !== true)
+                $result = $result->fetch_all(MYSQLI_ASSOC);
         } catch (Exception $exception) {
             echo $exception->getMessage();
         }

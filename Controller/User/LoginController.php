@@ -14,7 +14,7 @@ class LoginController extends Controller
     {
         $user = User::query()
             ->where(User::USERNAME, $request->input(User::USERNAME))
-            ->get();
+            ->get()[0];
 
         if ($user == null)
             throw new Exception('Username or Password wrong');

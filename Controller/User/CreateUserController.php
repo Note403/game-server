@@ -4,6 +4,7 @@ namespace Controller\User;
 
 use Auxilium\Controller;
 use Auxilium\Data\Request;
+use Auxilium\Support\Response;
 use Exception;
 use Auxilium\Support\App;
 use Auxilium\Support\Validator;
@@ -39,5 +40,7 @@ class CreateUserController extends Controller
             User::ROLE => 'user',
             User::BLOCKED => false,
         ]);
+
+        Response::success();
     }
 }
